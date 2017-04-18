@@ -31,8 +31,19 @@ class Clock extends Component {
     const minute = t.minutes();
     const hour = t.hour() % 12;
     const angleOfSecond = (second / 60) * 360;
-    const angleOfMinute = ((minute / 60) * 360) + angleOfSecond;
-    const angleOfHour = ((hour / 12) * 360) + angleOfMinute;
+    const angleOfMinute = (minute / 60) * 360;
+    const angleOfHour = ((hour / 12) + (minute / (12 * 60))) * 360;
+    const style = {
+      secondAngle: {
+        transform: `rotate(${angleOfSecond}deg)`,
+      },
+      minuteAngle: {
+        transform: `rotate(${angleOfMinute}deg)`,
+      },
+      hourAngle: {
+        transform: `rotate(${angleOfHour}deg)`,
+      },
+    };
     return (
       <div className="clock">
         <div className="top" />
@@ -41,9 +52,9 @@ class Clock extends Component {
         <div className="left" />
         <div className="center" />
         <div className="shadow" />
-        <div className="hands hour" />
-        <div className="hands minute" />
-        <div className="hands second" />
+        <div className="hands second" style={style.secondAngle} />
+        <div className="hands minute" style={style.minuteAngle} />
+        <div className="hands hour" style={style.hourAngle} />
       </div>
     );
   }

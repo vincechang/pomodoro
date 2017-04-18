@@ -103,44 +103,37 @@ body {
 }
 
 .hour {
+  height: 40px;
   width: 3px;
-  height: 100%;
+  top: 50px;
   position: absolute;
   left: 0;
   right: 0;
   margin: 0 auto;
   content: "";
   background: #262626;
-  height: 60px;
-  width: 3px;
-  top: 30px;
 }
 
 .minute {
-  width: 1px;
-  height: 100%;
+  height: 60px;
+  width: 2px;
+  top: 30px;
   position: absolute;
   left: 0;
   right: 0;
   margin: 0 auto;
   content: "";
   background: #262626;
-  height: 40px;
-  width: 1px;
-  top: 50px;
 }
 
 .second {
-  width: 2px;
-  height: 100%;
+  height: 60px;
+  width: 1px;
+  top: 30px;
   position: absolute;
   left: 0;
   right: 0;
   margin: 0 auto;
-  transform: rotate(200deg);
   content: "";
-  background: #fd1111;
-  height: 45px;
-  width: 2px;
-  top: 45px;
+  background: #262626;
 }
