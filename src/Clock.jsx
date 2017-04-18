@@ -15,8 +15,10 @@ class Clock extends Component {
     };
     this.clickClock = this.clickClock.bind(this);
     this.setWorking = this.setWorking.bind(this);
+    this.setBreak = this.setBreak.bind(this);
     this.cancelWorking = this.cancelWorking.bind(this);
     this.cancelBreak = this.cancelBreak.bind(this);
+    this.renderTimeLeft = this.renderTimeLeft.bind(this);
   }
 
   componentDidMount() {
@@ -31,11 +33,35 @@ class Clock extends Component {
 
   setWorking() {
     console.log('working');
-    this.setState({ clockStatus: 'working' });
+    const pomodoroMinutes = this.state.pomodoroMinutes;
+    this.endTime = this.state.now.add(pomodoroMinutes, 'm');
+    this.setState({
+      now: moment(),
+      clockStatus: 'working',
+    });
+  }
+
+  setBreak() {
+    console.log('break');
+    const pomodorosDone = this.state.pomodorosDone + 1;
+    let clockStatus;
+    let breakTime;
+    if (pomodorosDone % 4 === 0) {
+      clockStatus = 'longbreak';
+      breakTime = this.state.longBreakMinutes;
+    } else {
+      clockStatus = 'shortbreak';
+      breakTime = this.state.shortBreakMinutes;
+    }
+    this.endTime = this.state.now.add(breakTime, 'm');
+    this.setState({
+      clockStatus,
+      pomodorosDone,
+    });
   }
 
   cancelWorking() {
-    console.log('cancel working');
+    console.log('cancel work');
     this.setState({ clockStatus: 'normal' });
   }
 
@@ -45,9 +71,18 @@ class Clock extends Component {
   }
 
   tick() {
+    const clockStatus = this.state.clockStatus;
     this.setState({
       now: moment(),
     });
+    if (this.state.now.isSameOrAfter(this.endTime)) {
+      if (clockStatus === 'working') {
+        this.setBreak();
+      }
+      if (clockStatus === 'shortbreak' || clockStatus === 'longbreak') {
+        this.setWorking();
+      }
+    }
   }
 
   clickClock() {
@@ -60,6 +95,28 @@ class Clock extends Component {
     if (clockStatus in action) {
       action[clockStatus]();
     }
+  }
+
+  renderTimeLeft() {
+    if (this.state.clockStatus === 'normal') return null;
+    const timeLeft = this.endTime.diff(this.state.now, 'second');
+    const minutesLeft = Math.floor(timeLeft / 60);
+    const secondsLeft = timeLeft % 60;
+    const info = {
+      working: 'Working',
+      shortbreak: 'Short Break',
+      longbreak: 'Long Break',
+    };
+    return (
+      <div className="info">
+        <div>
+          {info[this.state.clockStatus]}
+        </div>
+        <div>
+          {`${minutesLeft}:${secondsLeft}`}
+        </div>
+      </div>
+    );
   }
 
   render() {
@@ -82,15 +139,18 @@ class Clock extends Component {
       },
     };
     return (
-      <div className="clock" onClick={this.clickClock}>
-        <div className="top" />
-        <div className="right" />
-        <div className="bottom" />
-        <div className="left" />
-        <div className="center" />
-        <div className="hands second" style={style.secondAngle} />
-        <div className="hands minute" style={style.minuteAngle} />
-        <div className="hands hour" style={style.hourAngle} />
+      <div>
+        <div className="clock" onClick={this.clickClock}>
+          <div className="top" />
+          <div className="right" />
+          <div className="bottom" />
+          <div className="left" />
+          <div className="center" />
+          <div className="hands second" style={style.secondAngle} />
+          <div className="hands minute" style={style.minuteAngle} />
+          <div className="hands hour" style={style.hourAngle} />
+          {this.renderTimeLeft()}
+        </div>
       </div>
     );
   }
