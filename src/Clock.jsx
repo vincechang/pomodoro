@@ -5,7 +5,6 @@ class Clock extends Component {
     super(props);
     this.state = {
       date: new Date(),
-      comment: 'Hello ',
     };
   }
 
@@ -22,7 +21,6 @@ class Clock extends Component {
   tick() {
     this.setState({
       date: new Date(),
-      comment: `${this.state.comment}x`,
     });
   }
 
@@ -30,7 +28,7 @@ class Clock extends Component {
     return (
       <div>
         <div>
-          {this.state.date.toLocaleTimeString()}
+          {this.state.date.toString()}
         </div>
         <div>
           {this.state.comment}
