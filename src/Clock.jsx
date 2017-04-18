@@ -34,11 +34,16 @@ class Clock extends Component {
     const angleOfMinute = ((minute / 60) * 360) + angleOfSecond;
     const angleOfHour = ((hour / 12) * 360) + angleOfMinute;
     return (
-      <div className="container">
-        <div className="clock">
-          <div className="hour" />
-          <div className="minute" />
-        </div>
+      <div className="clock">
+        <div className="top" />
+        <div className="right" />
+        <div className="bottom" />
+        <div className="left" />
+        <div className="center" />
+        <div className="shadow" />
+        <div className="hands hour" />
+        <div className="hands minute" />
+        <div className="hands second" />
       </div>
     );
   }
