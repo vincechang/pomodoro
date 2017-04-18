@@ -12,7 +12,7 @@ class App extends Component {
           <h2>Pomodoro Clock</h2>
         </div>
         <Clock />
-      </div>
+      git </div>
     );
   }
 }
